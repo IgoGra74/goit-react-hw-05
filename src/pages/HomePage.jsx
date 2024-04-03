@@ -19,23 +19,21 @@ const HomePage = () => {
         },
       };
 
-      axios
-        .request(options)
-        .then(function (response) {
-          const trendingMovies = response.data.results;
-          console.log(trendingMovies);
-          setMovies(trendingMovies);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+      try {
+        const response = await axios.request(options);
+        const trendingMovies = response.data.results;
+        setMovies(trendingMovies);
+      } catch (error) {
+        console.error(error);
+      }
     }
     fetchTrendingMovies();
   }, []);
+
   return (
     <div>
       <h1>Trending today</h1>
-      {movies !== null && <MovieList movies={movies} />}
+      {movies && <MovieList movies={movies} />}
       {/* <Outlet /> */}
     </div>
   );
