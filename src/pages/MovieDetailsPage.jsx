@@ -1,31 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
+
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link, Route, Routes } from "react-router-dom";
-import MovieCast from "../components/MovieCast/MovieCast";
-import MovieReviews from "../components/MovieReviews/MovieReviews";
+const MovieCast = lazy(() => import("../components/MovieCast/MovieCast"));
+const MovieReviews = lazy(() =>
+  import("../components/MovieReviews/MovieReviews")
+);
+
+// import css from "./MovieDetailsPage.module.css";
+import API_REQUEST_TEMPLATE from "../movies-api";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
+  const defaultImg =
+    "https://dl-media.viber.com/10/share/2/long/vibes/icon/image/0x0/95e0/5688fdffb84ff8bed4240bcf3ec5ac81ce591d9fa9558a3a968c630eaba195e0.jpg";
 
   useEffect(() => {
     async function fetchMovieDetails() {
-      const options = {
-        method: "GET",
-        url: `https://api.themoviedb.org/3/movie/${movieId}`,
-        params: { language: "en-US" },
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NTJjOTRmNWZhNWVmNTMxY2M5ZGZhYTBhOTYwZmYxNyIsInN1YiI6IjY2MDkyNzNhZDRmZTA0MDE3YzJhMzc2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SEkEt_-LzYjq6JSyF--2DSj0F8tnxODl0Pfw1-3Qfls",
-        },
-      };
-
       try {
-        const response = await axios.request(options);
-        const movieItemDetails = response.data;
-        setMovieDetails(movieItemDetails);
+        const response = await axios.get(`movie/${movieId}`, {
+          ...API_REQUEST_TEMPLATE,
+        });
+        setMovieDetails(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -38,7 +36,12 @@ const MovieDetailsPage = () => {
       {movieDetails !== null && (
         <div>
           <img
-            src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
+            src={
+              movieDetails.poster_path
+                ? `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`
+                : defaultImg
+            }
+            width={250}
             alt={movieDetails.title}
           />
           <h2>{movieDetails.title}</h2>
@@ -55,10 +58,12 @@ const MovieDetailsPage = () => {
           <Link to="reviews">Reviews</Link>
         </li>
       </ul>
-      <Routes>
-        <Route path="cast" element={<MovieCast />} />
-        <Route path="reviews" element={<MovieReviews />} />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="cast" element={<MovieCast />} />
+          <Route path="reviews" element={<MovieReviews />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 };

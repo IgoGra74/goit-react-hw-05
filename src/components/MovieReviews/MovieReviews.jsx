@@ -1,46 +1,47 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import API_REQUEST_TEMPLATE from "../../movies-api";
 
 const MovieReviews = () => {
   const { movieId } = useParams();
-  const [movieReviews, setMovieReviews] = useState(null);
+  const [movieReviews, setMovieReviews] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!movieId) return;
     async function fetchMovieReviews() {
-      const options = {
-        method: "GET",
-        url: `https://api.themoviedb.org/3/movie/${movieId}/reviews`,
-        params: { language: "en-US" },
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NTJjOTRmNWZhNWVmNTMxY2M5ZGZhYTBhOTYwZmYxNyIsInN1YiI6IjY2MDkyNzNhZDRmZTA0MDE3YzJhMzc2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SEkEt_-LzYjq6JSyF--2DSj0F8tnxODl0Pfw1-3Qfls",
-        },
-      };
-
+      // setLoading(true);
+      // setError(null);
       try {
-        const response = await axios.request(options);
-        const movieReviews = response.data.results;
-
-        setMovieReviews(movieReviews);
+        const response = await axios.get(`movie/${movieId}/reviews`, {
+          ...API_REQUEST_TEMPLATE,
+        });
+        setMovieReviews(response.data.results);
       } catch (error) {
-        console.log(error);
+        // setError(error.message || "An error occurred while fetching reviews.");
       }
+      // setLoading(false);
     }
     fetchMovieReviews();
   }, [movieId]);
 
   return (
     <div>
+      {/* {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>} */}
       <ul>
-        {Array.isArray(movieReviews) &&
+        {movieReviews.length > 0 ? (
           movieReviews.map((movieReview) => (
             <li key={movieReview.id}>
-              <p>{movieReview.author}</p>
+              <p>Author: {movieReview.author}</p>
               <p>{movieReview.content}</p>
             </li>
-          ))}
+          ))
+        ) : (
+          <p>We don&apos;t have any reviews for this movie</p>
+        )}
       </ul>
     </div>
   );

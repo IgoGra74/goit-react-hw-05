@@ -1,28 +1,18 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import MovieList from "../components/MovieList/MovieList";
-// import { Outlet } from "react-router-dom";
+import API_REQUEST_TEMPLATE from "../movies-api";
 
 const HomePage = () => {
   const [movies, setMovies] = useState(null);
 
   useEffect(() => {
     async function fetchTrendingMovies() {
-      const options = {
-        method: "GET",
-        url: "https://api.themoviedb.org/3/trending/movie/day",
-        params: { language: "en-US" },
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NTJjOTRmNWZhNWVmNTMxY2M5ZGZhYTBhOTYwZmYxNyIsInN1YiI6IjY2MDkyNzNhZDRmZTA0MDE3YzJhMzc2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SEkEt_-LzYjq6JSyF--2DSj0F8tnxODl0Pfw1-3Qfls",
-        },
-      };
-
       try {
-        const response = await axios.request(options);
-        const trendingMovies = response.data.results;
-        setMovies(trendingMovies);
+        const response = await axios.get(`trending/movie/day`, {
+          ...API_REQUEST_TEMPLATE,
+        });
+        setMovies(response.data.results);
       } catch (error) {
         console.error(error);
       }
@@ -34,7 +24,6 @@ const HomePage = () => {
     <div>
       <h1>Trending today</h1>
       {movies && <MovieList movies={movies} />}
-      {/* <Outlet /> */}
     </div>
   );
 };
