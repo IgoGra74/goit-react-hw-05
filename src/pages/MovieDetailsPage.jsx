@@ -10,6 +10,7 @@ const MovieReviews = lazy(() =>
 
 // import css from "./MovieDetailsPage.module.css";
 import API_REQUEST_TEMPLATE from "../movies-api";
+import Loader from "../components/Loader/Loader";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -58,7 +59,7 @@ const MovieDetailsPage = () => {
           <Link to="reviews">Reviews</Link>
         </li>
       </ul>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="cast" element={<MovieCast />} />
           <Route path="reviews" element={<MovieReviews />} />

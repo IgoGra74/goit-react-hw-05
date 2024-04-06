@@ -1,7 +1,8 @@
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import css from "./SearchMovie.module.css";
 import toast from "react-hot-toast";
 
-const SearchMovie = () => {
+const SearchMovie = ({ onSearchMovie }) => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
@@ -12,7 +13,8 @@ const SearchMovie = () => {
       toast.error("Please enter search term!");
       return;
     }
-    // onSearchImage(topic);
+    onSearchMovie(topic);
+
     form.reset();
   };
   return (
@@ -29,6 +31,7 @@ const SearchMovie = () => {
         <button className={css.button} type="submit">
           Search
         </button>
+        <ErrorMessage />
       </form>
     </div>
   );
