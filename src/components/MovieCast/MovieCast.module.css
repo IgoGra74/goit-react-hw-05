@@ -1,0 +1,48 @@
+.name {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.actor {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: calc((100% - 20px) / 4);
+    width: 220px;
+    height: 260px;
+    cursor: pointer;
+    flex-shrink: 0;
+    border-radius: 4px;
+    border: 1px solid #000000;
+    background-color: #f3f8f8;
+}
+
+.img {
+    width: 120px;
+    height: 160px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+}
+
+.cast {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    justify-content: center;
+    align-items: center;
+    row-gap: 15px;
+    column-gap: 15px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    justify-content: center;
+}
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}

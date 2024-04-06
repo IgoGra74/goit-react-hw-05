@@ -2,41 +2,36 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import API_REQUEST_TEMPLATE from "../../movies-api";
+import css from "./MovieReviews.module.css";
 
 const MovieReviews = () => {
   const { movieId } = useParams();
   const [movieReviews, setMovieReviews] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!movieId) return;
     async function fetchMovieReviews() {
-      // setLoading(true);
-      // setError(null);
       try {
         const response = await axios.get(`movie/${movieId}/reviews`, {
           ...API_REQUEST_TEMPLATE,
         });
         setMovieReviews(response.data.results);
       } catch (error) {
-        // setError(error.message || "An error occurred while fetching reviews.");
+        console.log(error);
       }
-      // setLoading(false);
     }
     fetchMovieReviews();
   }, [movieId]);
 
   return (
     <div>
-      {/* {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>} */}
-      <ul>
+      <h2 className={css.title}>Reviews</h2>
+      <ul className={css.reviews}>
         {movieReviews.length > 0 ? (
           movieReviews.map((movieReview) => (
-            <li key={movieReview.id}>
-              <p>Author: {movieReview.author}</p>
-              <p>{movieReview.content}</p>
+            <li key={movieReview.id} className={css.review}>
+              <p className={css.author}>Author: {movieReview.author}</p>
+              <p className={css.content}>{movieReview.content}</p>
             </li>
           ))
         ) : (

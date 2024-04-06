@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import API_REQUEST_TEMPLATE from "../../movies-api";
+import css from "./MovieCast.module.css";
 
 const MovieCast = () => {
   const { movieId } = useParams();
@@ -26,11 +27,13 @@ const MovieCast = () => {
 
   return (
     <div>
-      <ul>
+      <h2 className={css.title}>Cast</h2>
+      <ul className={css.cast}>
         {Array.isArray(movieCast) &&
           movieCast.map((cast) => (
-            <li key={cast.id}>
+            <li key={cast.id} className={css.actor}>
               <img
+                className={css.img}
                 src={
                   cast.profile_path
                     ? `https://image.tmdb.org/t/p/w500${cast.profile_path}`
@@ -40,8 +43,8 @@ const MovieCast = () => {
                 height={160}
                 alt={cast.name}
               />
-              <p>{cast.name}</p>
-              <p>{cast.character}</p>
+              <p className={css.name}>{cast.name}</p>
+              <p className={css.name}>Character: {cast.character}</p>
             </li>
           ))}
       </ul>

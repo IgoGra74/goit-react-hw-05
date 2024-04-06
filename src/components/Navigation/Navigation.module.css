@@ -1,11 +1,11 @@
 .header {
     display: flex;
-    /* align-items: center;
-    justify-content: space-between; */
     gap: 12px;
     padding: 8px 0;
-    margin-bottom: 16px;
+    margin-bottom: 25px;
     border-bottom: 1px solid black;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    background-color: #f3f3f3;
 }
 
 .nav {
@@ -18,10 +18,10 @@
     border-radius: 4px;
     text-decoration: none;
     color: black;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .active {
     color: white;
-    background-color: orangered;
+    background-color: rgb(70, 95, 69);
 }

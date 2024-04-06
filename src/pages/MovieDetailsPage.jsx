@@ -1,18 +1,20 @@
-import { useEffect, useState, Suspense, lazy } from "react";
-
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useRef, Suspense, lazy } from "react";
+import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import { Link, Route, Routes } from "react-router-dom";
+
 const MovieCast = lazy(() => import("../components/MovieCast/MovieCast"));
 const MovieReviews = lazy(() =>
   import("../components/MovieReviews/MovieReviews")
 );
 
-// import css from "./MovieDetailsPage.module.css";
+import css from "./MovieDetailsPage.module.css";
+
 import API_REQUEST_TEMPLATE from "../movies-api";
 import Loader from "../components/Loader/Loader";
 
 const MovieDetailsPage = () => {
+  const location = useLocation();
+  const backLink = useRef(location.state?.from ?? "/");
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const defaultImg =
@@ -34,8 +36,9 @@ const MovieDetailsPage = () => {
 
   return (
     <div>
+      <Link to={backLink.current}>⬅ Go Back</Link>
       {movieDetails !== null && (
-        <div>
+        <div className={css.movie}>
           <img
             src={
               movieDetails.poster_path
@@ -43,22 +46,32 @@ const MovieDetailsPage = () => {
                 : defaultImg
             }
             width={250}
+            height={400}
             alt={movieDetails.title}
           />
-          <h2>{movieDetails.title}</h2>
-          <p>Vote average: {movieDetails.vote_average}</p>
-          <h3>{movieDetails.overview}</h3>
+          <div className={css.info}>
+            <h1>{movieDetails.title}</h1>
+            <p>Release date: {movieDetails.release_date}</p>
+            <p>User Score: {movieDetails.vote_average}</p>
+            <p>Popularity: {movieDetails.popularity}</p>
+            <h2>Overview</h2>
+            <p>{movieDetails.overview}</p>
+          </div>
         </div>
       )}
-      <h4>Additional information</h4>
-      <ul>
-        <li>
-          <Link to="cast">Cast</Link>
-        </li>
-        <li>
-          <Link to="reviews">Reviews</Link>
-        </li>
-      </ul>
+
+      <div className={css.additional}>
+        <h2 className={css.details}>Additional information</h2>
+        <ul className={css.list}>
+          <li className={css.link}>
+            <Link to="cast">Cast</Link>
+          </li>
+          <li className={css.link}>
+            <Link to="reviews">Reviews</Link>
+          </li>
+        </ul>
+      </div>
+
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="cast" element={<MovieCast />} />

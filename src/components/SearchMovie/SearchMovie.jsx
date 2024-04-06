@@ -2,18 +2,18 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import css from "./SearchMovie.module.css";
 import toast from "react-hot-toast";
 
-const SearchMovie = ({ onSearchMovie }) => {
+const SearchMovie = ({ onSetSearchMovie }) => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
     const form = evt.target;
-    const topic = form.elements.topic.value.trim();
+    const query = form.elements.topic.value.trim();
 
-    if (topic === "") {
+    if (query === "") {
       toast.error("Please enter search term!");
       return;
     }
-    onSearchMovie(topic);
+    onSetSearchMovie(query);
 
     form.reset();
   };

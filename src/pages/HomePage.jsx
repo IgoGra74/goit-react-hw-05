@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import MovieList from "../components/MovieList/MovieList";
 import API_REQUEST_TEMPLATE from "../movies-api";
+import css from "./HomePage.module.css";
 
 const HomePage = () => {
   const [movies, setMovies] = useState(null);
@@ -22,7 +23,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Trending today</h1>
+      <h1 className={css.title}>Trending today</h1>
       {movies && <MovieList movies={movies} />}
     </div>
   );
