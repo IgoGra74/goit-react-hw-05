@@ -40,7 +40,7 @@ const MovieCast = () => {
                     : defaultImgCast
                 }
                 width="120"
-                height={160}
+                height="160"
                 alt={cast.name}
               />
               <p className={css.name}>{cast.name}</p>
